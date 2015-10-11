@@ -3,7 +3,8 @@ var url = 'http://www.baidu.com';
 
 var cheerio = require('cheerio'),
 	request = require('request'),
-	Promise = require('promise');
+	Promise = require('promise'),
+	iconv = require('iconv-lite');
 
 
 // var arr = []
@@ -23,7 +24,8 @@ var cheerio = require('cheerio'),
 // })
 
 
-var urlArr = ['http://www.baidu.com', 'http://www.163.com/'];
+// var urlArr = ['http://www.baidu.com', 'http://www.163.com/'];
+var urlArr = ['http://www.163.com/'];
 
 var arrOut = [], arrIn = [];
 var arrPromise = []
@@ -66,10 +68,16 @@ var arrPromise = []
 // 	})
 // })
 
+
 for (var i = urlArr.length - 1; i >= 0; i--) {
 	(function(index) {
 		arrPromise[index] = new Promise(function(resolve, reject) {
 			request(urlArr[i], function(err, res, body) {
+				// body = iconv.decode(body, "gbk");
+				body = iconv.decode(body, 'gbk'); 
+				console.log(body)
+        		var str2 = iconv.encode(body, 'utf-8');
+				console.log(str2)
 				if(err) {
 					reject(null);
 				} else {
